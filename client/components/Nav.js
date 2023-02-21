@@ -3,10 +3,10 @@ import Home from "../pages";
 
 const Nav = () => {
   return (
-    <nav className="nav bg-dark d-flex justify-content-between">
+    <nav className="nav d-flex justify-content-between" style={{backgroundColor:"blue"}}>
       
         <Link legacyBehavior href="/">
-          <a className="nav-link text-light">Home</a>
+          <a className="nav-link text-light logo">MERNCAMP</a>
         </Link>
         
         <Link legacyBehavior href="/login">
