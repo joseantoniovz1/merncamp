@@ -3,7 +3,7 @@ import {SyncOutlined} from "@ant-design/icons"
 const AuthForm = ({
     handleSubmit,
     name, setName, email, setEmail, password, setPassword, secret, setSecret, loading
-}) => {
+}) => (
     <form onSubmit={handleSubmit}>
         <div className="form-group p-2">
             <small><label className="text-muted">Your name</label></small>
@@ -68,6 +68,6 @@ const AuthForm = ({
             </button>
         </div>    
     </form>
-}
+)
 
 export default AuthForm;

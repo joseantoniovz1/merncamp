@@ -12,7 +12,7 @@ const Register = () => {
     const [password, setPassword]= useState('');
     const [secret, setSecret]= useState('');
     const [ok, setOk] = useState(false);
-    const [loading, setLoading] = setLoading(false);
+    const [loading, setLoading] = useState(false);
     
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -33,6 +33,7 @@ const Register = () => {
             setLoading(false);
             //.then((res)=>setOk(res.data.ok))
         } catch(err){
+            console.log("ALV" + err);
             toast.error(err.response.data);
             setLoading(false);
         }
@@ -72,7 +73,7 @@ const Register = () => {
                         footer={null}
                     >
                         <p>You have successfully registered.</p>
-                        <Link href="/login">
+                        <Link legacyBehavior href="/login">
                             <a className="btn btp-primary btn-sm">Login</a>
                         </Link>
                     </Modal>
