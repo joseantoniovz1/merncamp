@@ -2,10 +2,10 @@ import {SyncOutlined} from "@ant-design/icons"
 
 const AuthForm = ({
     handleSubmit,
-    name, setName, email, setEmail, password, setPassword, secret, setSecret, loading
+    name, setName, email, setEmail, password, setPassword, secret, setSecret, loading, page
 }) => (
     <form onSubmit={handleSubmit}>
-        <div className="form-group p-2">
+        {page!=="login" && (<div className="form-group p-2">
             <small><label className="text-muted">Your name</label></small>
             <input 
                 type="text" 
@@ -14,7 +14,7 @@ const AuthForm = ({
                 value={name}
                 onChange={(e)=>setName(e.target.value)}
             />
-        </div>
+        </div>)}
         <div className="form-group p-2">
             <small><label className="text-muted">Email address</label></small>
             <input 
@@ -35,6 +35,8 @@ const AuthForm = ({
                 onChange={(e)=>setPassword(e.target.value)}
             />
         </div>
+        {page!=="login" && (
+            <>
         <div className="form-group p-2">
             <small>
                 <label className="text-muted">Pick a question</label>
@@ -57,11 +59,12 @@ const AuthForm = ({
                 value={secret}
                 onChange={(e)=>setSecret(e.target.value)}
             />
-        </div>
+        </div></>)}
 
         <div className="form-group p-2">
             <button 
-                disabled={!name || !email || !password || !secret} 
+                disabled={page === "login" ? !email || !password 
+                    : !name || !email || !password|| !secret} 
                 className="btn btn-primary col-12"
             >
                 {loading ? <SyncOutlined spin className="py-1"/> : "Submit"}
