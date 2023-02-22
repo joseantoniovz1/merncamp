@@ -1,15 +1,15 @@
-import user from "../models/user";
-import { hashPassword, comparePassword, hashPassword } from "../helpers/auth";
+import User from "../models/user";
+import { hashPassword, comparePassword } from "../helpers/auth";
 
 export const register = async (req, res) =>{
-    //console.log("Register endpoint: ", req.body);
+    console.log("Register endpoint: ", req.body);
     const {name, email, password, secret} = req.body
     //validation
-    if(name) return res.status(400).send("Name is required")
-    if(password || password.length <5 ) return res.status(400).send("Password is required and should be 6 characters long")
-    if(secret) return res.status(400).send("Answer is required")
+    if(!name) return res.status(400).send("Name is required")
+    if(!password || password.length <5 ) return res.status(400).send("Password is required and should be 6 characters long")
+    if(!secret) return res.status(400).send("Answer is required")
     
-    const exist = await user.findOne({email});
+    const exist = await User.findOne({email});
     if(exist){
        return res.status(400).send("Email is taken"); 
     }

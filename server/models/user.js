@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 
-const {Scheme} = mongoose;
+const {Schema} = mongoose;
 
-const userSchema = new Scheme({
+const userSchema = new Schema({
     name: {
         type: String, 
         trim: true,
@@ -26,8 +26,8 @@ const userSchema = new Scheme({
     },
     about: {},
     photo: String,
-    following: [{type: Scheme.ObjectId, ref:"User"}],
-    followers: [{type: Scheme.ObjectId, ref:"User"}]
+    following: [{type: Schema.ObjectId, ref: "User"}],
+    followers: [{type: Schema.ObjectId, ref:"User"}]
 }, {timestamps: true});
 
 export default mongoose.model("User", userSchema);
