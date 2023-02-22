@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import axios from 'axios';
 import {toast} from "react-toastify";
 import { Modal } from "antd";
 import Link from "next/link";
 import AuthForm from "../components/forms/AuthForm";
+import { UserContext } from "../context";
+import { useRouter } from "next/router";
 
 const Register = () => {
 
@@ -13,6 +15,9 @@ const Register = () => {
     const [secret, setSecret]= useState('');
     const [ok, setOk] = useState(false);
     const [loading, setLoading] = useState(false);
+
+    const [state, setState] = useContext(UserContext);
+    const router = useRouter();
     
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -38,6 +43,9 @@ const Register = () => {
             setLoading(false);
         }
     };
+
+    if(state && state.token)
+        router.push("/");
     
 
     return (
@@ -77,6 +85,16 @@ const Register = () => {
                             <a className="btn btp-primary btn-sm">Login</a>
                         </Link>
                     </Modal>
+                </div>
+            </div>
+
+            <div className="row">
+                <div className="col">
+                    <p className="text-center">Already registered?{" "}
+                        <Link legacyBehavior href="/login">
+                            <a>Login</a>
+                        </Link>
+                    </p>
                 </div>
             </div>
         </div>
