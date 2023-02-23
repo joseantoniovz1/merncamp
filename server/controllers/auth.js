@@ -65,7 +65,7 @@ export const login = async (req, res) => {
             });
         }
         // create signed token
-        const token = jwt.sign({_id: user._id}, process.env.JWT_SECRET, {expiresIn: "24000"});
+        const token = jwt.sign({_id: user._id}, process.env.JWT_SECRET, {expiresIn: "7d"});
         user.password = undefined;
         user.secret = undefined;
         res.json({
