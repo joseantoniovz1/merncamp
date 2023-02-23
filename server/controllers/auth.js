@@ -6,9 +6,22 @@ export const register = async (req, res) =>{
     console.log("Register endpoint: ", req.body);
     const {name, email, password, secret} = req.body
     //validation
-    if(!name) return res.status(400).send("Name is required")
-    if(!password || password.length <5 ) return res.status(400).send("Password is required and should be 6 characters long")
-    if(!secret) return res.status(400).send("Answer is required")
+    if(!name) {
+        return res.json({
+            error:"Name is required"
+        });
+    }
+    if(!password || password.length <5 ) {
+        return res.json({
+            error:"Password is required and should be 6 characters long"
+        });
+    }
+
+    if(!secret) {
+        return res.json({
+            error:"Answer is required"
+        });
+    }
     
     const exist = await User.findOne({email});
     if(exist){
@@ -33,15 +46,24 @@ export const register = async (req, res) =>{
 };
 
 export const login = async (req, res) => {
-    //console.log(req.body);
+    console.log(req.body);
     try {
         const {email, password} = req.body;
         // verify if user exist in DB
         const user = await User.findOne({email});
-        if(!user) return res.status(400).send("No user found");
+        console.log("USER: ", user);
+        if(!user) {
+            return res.json({
+                error:"No user found"
+            });
+        }
         // check password
         const match = await comparePassword(password, user.password);
-        if(!match) return res.status(400).send("Wrong password");
+        if(!match) {
+            return res.json({
+                error: "Wrong password"
+            });
+        }
         // create signed token
         const token = jwt.sign({_id: user._id}, process.env.JWT_SECRET, {expiresIn: "24000"});
         user.password = undefined;
@@ -69,3 +91,39 @@ export const currentUser = async (req, res) => {
         res.sendStatus(400);
     }
 };
+
+
+export const forgotPassword = async(req, res) => {
+    //console.log(req.body);
+    const {email, newPassword, secret} = req.body;
+    if(!newPassword || !newPassword>6){
+        return res.json({
+            error: "New password is required and should be min 6 characters long"
+        });
+    }
+    if(!secret){
+        return res.json({
+            error: "Secret is required"
+        });
+    }
+
+    const user = await User.findOne({email, secret});
+    if(!user)
+        return res.json({
+            error: "We can virify you with those details"
+        });
+
+    try {
+        const hashedPassword = await hashPassword(newPassword);
+        await User.findByIdAndUpdate(user._id, {password:hashedPassword});
+        return res.json({
+            success : "Congrats. Now you can login with your new password"
+        });
+    }catch(err){
+        console.log(err)
+        return res.json({
+            error: "Something wrong. Try again."
+        });
+    }
+
+}

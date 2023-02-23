@@ -27,18 +27,21 @@ const Login = () => {
                 email,
                 password
             });
-            // update context
-            setState({
-                user: data.user,
-                token: data.token
-            });
-            // save in local storage
-            window.localStorage.setItem("auth", JSON.stringify(data));
-            //console.log(data);
-            router.push("/");
-            //.then((res)=>setOk(res.data.ok))
+            console.log("QWE", data);
+            if(data.error) {
+                toast.error(data.error);
+                setLoading(false);
+            } else {
+                // update context
+                setState({
+                    user: data.user,
+                    token: data.token
+                });
+                // save in local storage
+                window.localStorage.setItem("auth", JSON.stringify(data));
+                router.push("/");
+            }
         } catch(err){
-            console.log("ALV login" + err);
             toast.error(err.response.data);
             setLoading(false);
         }
@@ -74,6 +77,16 @@ const Login = () => {
                     <p className="text-center">Not yet registered?{" "}
                         <Link legacyBehavior href="/register">
                             <a>Register</a>
+                        </Link>
+                    </p>
+                </div>
+            </div>
+
+            <div className="row">
+                <div className="col">
+                    <p className="text-center">
+                        <Link legacyBehavior href="/forgot-password">
+                            <a className="text-danger">Forgot password?</a>
                         </Link>
                     </p>
                 </div>
