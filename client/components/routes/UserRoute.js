@@ -18,11 +18,7 @@ const UserRoute = ({children}) =>{
     const getCurrentUser = async () =>{
         try{
             const {data} = await axios
-                .get(`${process.env.NEXT_PUBLIC_API}/current-user`, {
-                    headers: {
-                        "Authorization": `Bearer ${state.token}`
-                    }
-                });
+                .get(`/current-user`);
             if(data.ok)
                 setOk(true);
         }catch(err){
@@ -32,7 +28,7 @@ const UserRoute = ({children}) =>{
     };
 
     process.browser && state === null && setTimeout(()=> {
-        getCurrentUser()
+        getCurrentUser();
     }, 1000);
 
     return !ok ? 
