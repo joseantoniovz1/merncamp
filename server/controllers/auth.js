@@ -58,7 +58,7 @@ export const login = async (req, res) => {
 };
 
 export const currentUser = async (req, res) => {
-    console.log(req.user);
+    console.log("ER: -> ", req.auth);
     try {
         //const user = await User.findById(req.user._id);
         //res.json(user);
