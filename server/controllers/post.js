@@ -31,11 +31,25 @@ export const uploadImage = async (req, res) => {
     //console.log("req files: ", req.files);
     try {
         const result = await cloudinary.uploader.upload(req.files.image.path);
-        console.log("Uploaded image ur: ", result);
+        //console.log("Uploaded image ur: ", result);
         res.json({
             url: result.secure_url, //https
             public_id: result.public_id 
         });
+    }catch(err){
+        console.log(err);
+    }
+};
+
+export const postByUser = async (req, res)=> {
+    try {
+        //const posts = await Post.find({postedBy: req.auth._id})
+        const posts = await Post.find()
+            .populate("postedBy", "_id name image")
+            .sort({createdAt:-1})
+            .limit(10);
+        //console.log("Posts: ", posts);
+        res.json(posts);
     }catch(err){
         console.log(err);
     }
