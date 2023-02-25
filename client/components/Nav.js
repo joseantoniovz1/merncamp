@@ -31,11 +31,26 @@ const Nav = () => {
 
         { state !== null ? (
           <>
-            <Link legacyBehavior href="/user/dashboard">
-              <a className={`nav-link text-light ${current === "/user/dashboard" && "active"}`}>{state && state.user && state.user.name}</a>
-            </Link>
-
-            <a className="nav-link text-light" onClick={logout}>Logout</a>
+            <div className="dropdown">
+              <a 
+                className="btn dropdown-toggle text-light" 
+                role="button" 
+                data-bs-toggle="dropdown" 
+                aria-expanded="false"
+              >
+                {state && state.user && state.user.name}
+              </a>
+              <ul className="dropdown-menu">
+                <li>
+                  <Link legacyBehavior href="/user/dashboard">
+                    <a className={`nav-link dropdown-item ${current === "/user/dashboard" && "active"}`}>Dashboard</a>
+                  </Link>
+                </li>
+                <li>
+                  <a className="nav-link dropdown-item" onClick={logout}>Logout</a>
+                </li>
+              </ul>
+            </div>
           </>
         ): (
           <>
