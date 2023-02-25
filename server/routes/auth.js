@@ -1,6 +1,6 @@
 import express from "express";
 //Controllers
-import { register, login, currentUser, forgotPassword } from "../controllers/auth";
+import { register, login, currentUser, forgotPassword, profileUpdate } from "../controllers/auth";
 // middleware
 import { requireSignIn } from "../middlewares";
 
@@ -13,6 +13,7 @@ router.post("/register", register);
 router.post("/login", login);
 router.get("/current-user", requireSignIn, currentUser);
 router.post("/forgot-password", forgotPassword);
+router.put("/profile-update", requireSignIn, profileUpdate);
 
 
 

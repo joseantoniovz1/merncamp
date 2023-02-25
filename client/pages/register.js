@@ -24,7 +24,6 @@ const Register = () => {
         e.preventDefault();
         try {
             setLoading(true);
-        //console.log(name, email, password, secret);
             const {data} = await axios.post(`/register`, {
                 name,
                 email,
@@ -43,7 +42,6 @@ const Register = () => {
                 setLoading(false);
             }
         } catch(err){
-            console.log("ALV" + err);
             toast.error(err.response.data);
             setLoading(false);
         }
