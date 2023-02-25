@@ -1,54 +1,52 @@
-import { useContext, useState, useEffect } from "react";
-import { UserContext } from "../../context";
-import UserRoute from "../../components/routes/UserRoute";
-import PostForm from "../../components/forms/PostForm";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
+import PostForm from "../../../components/forms/PostForm";
+import UserRoute from "../../../components/routes/UserRoute";
 import {toast} from "react-toastify";
-import PostList from "../../components/cards/PostList";
 
-const Home = () => {
-    const [state, setState] = useContext(UserContext);
+
+const EditPost = () =>{
+    const [post, setPost] = useState({});
     //state
     const [content, setContent] = useState("");
     const [image, setImage] = useState({});
     const [uploading, setUploading] = useState(false);
-    //posts
-    const [posts, setPosts] = useState([]);
-
     //router
     const router = useRouter();
+    //console.log("router: ", router);
+    const _id = router.query._id;
 
-    //useEffect
-    useEffect(() =>{
-        if(state && state.token)
-            fetchUserPosts();
-    }, [state && state.token])
+    useEffect(()=>{
+        if(_id)
+        fetchPost();
+    }, [_id]);
 
-    const fetchUserPosts = async ()=> {
-        try{
-            const {data} = await axios.get("/user-posts");
-            //console.log("User posts: ", data);
-            setPosts(data);
-        }catch(err){
+
+    const fetchPost = async () => {
+        try {
+            const {data} = await axios.get(`/user-post/${_id}`);
+            setPost(data);
+            setContent(data.content);
+            setImage(data.image);
+        } catch (err) {
             console.log(err);
         }
-    }
+    };
 
     const postSubmit = async (e) => {
         e.preventDefault();
+        //console.log("Submit post to update: ", content, image);
         try {
-            const {data} = await axios.post("/create-post", {
-                content, image
+            const {data} = await axios.put(`/update-post/${_id}`, {
+                content, 
+                image
             });
-            console.log("create post response: ", data);
             if(data.error){
                 toast.error(data.error);
             } else {
-                fetchUserPosts();
-                toast.success("Post created");
-                setContent("");
-                setImage({});
+                toast.success("Post updated");
+                router.push("/user/dashboard");
             }
         }catch(err){
             console.log(err);
@@ -73,20 +71,7 @@ const Home = () => {
             console.log(err);
             setUploading(false);
         }
-    };
-
-    const handleDelete = async (post) => {
-        try {
-            const answer = window.confirm("¿Are you sure?")
-            if(!answer)
-                return;
-            const {data} = await axios.delete(`/delete-post/${post._id}`);
-            toast.error("Post deleted");
-            fetchUserPosts();
-        } catch (err) {
-            console.log(err);
-        }
-    };
+    }
 
     return (
         <UserRoute>
@@ -97,7 +82,7 @@ const Home = () => {
                     </div>
                 </div>
                 <div className="row py-3">
-                    <div className="col-md-8">
+                    <div className="col-md-8 offset-md-2">
                         <PostForm
                             content = {content}
                             setContent = {setContent}
@@ -106,16 +91,12 @@ const Home = () => {
                             uploading = {uploading}
                             image = {image}
                         />
-                        <br/>
-                        <PostList posts={posts} handleDelete={handleDelete}/>
                     </div>
-                    { /*<pre>{JSON.stringify(posts, null, 4)}</pre>*/}
-                    
-                    <div className="col-md-4">Sidebar</div>
                 </div>
             </div>
         </UserRoute>
     );
-};
 
-export default Home;
+}
+
+export default EditPost;

@@ -13,7 +13,7 @@ import PostImage from "../images/PostImage";
 import { UserContext } from "../../context";
 import { useRouter } from "next/router";
 
-const PostList = ({posts}) => {
+const PostList = ({posts, handleDelete}) => {
     
     const [state] = useContext(UserContext);
     const router = useRouter();
@@ -51,6 +51,7 @@ const PostList = ({posts}) => {
                                     className="text-danger pt-2 h5 px-2 mx-auto"
                                 />
                                 <DeleteOutlined 
+                                    onClick={()=> handleDelete(post)}
                                     className="text-danger pt-2 h5 px-2 mx-auto"
                                 />
                             </>

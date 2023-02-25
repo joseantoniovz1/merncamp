@@ -1,6 +1,21 @@
+import Post from "../models/post";
 import {expressjwt} from "express-jwt";
 
 export const requireSignIn = expressjwt({
     secret: "QWERTY",
     algorithms: ['HS256']
 });
+
+export const canEditDeletePost = async (req, res, next) => {
+    try {
+        const post = await Post.findById(req.params._id);
+        //console.log("Post in editdelete middleware: ", post);
+        if(req.auth._id != post.postedBy){
+            return res.status(400).send("Unauthorized");
+        } else {
+            next();
+        }
+    } catch (err) {
+        console.log(err);
+    }
+};
