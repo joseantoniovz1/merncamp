@@ -1,10 +1,45 @@
 import {SyncOutlined} from "@ant-design/icons"
 
 const AuthForm = ({
+    profileUpdate,
     handleSubmit,
-    name, setName, email, setEmail, password, setPassword, secret, setSecret, loading, page
+    name, 
+    setName, 
+    email, 
+    setEmail, 
+    password, 
+    setPassword, 
+    secret, 
+    setSecret, 
+    loading, 
+    page,
+    username, 
+    setUsername, 
+    about, 
+    setAbout
 }) => (
     <form onSubmit={handleSubmit}>
+        {profileUpdate && (<div className="form-group p-2">
+            <small><label className="text-muted">Username</label></small>
+            <input 
+                type="text" 
+                className="form-control" 
+                placeholder="Enter username"
+                value={username}
+                onChange={(e)=>setUsername(e.target.value)}
+            />
+        </div>)}
+        {profileUpdate && (<div className="form-group p-2">
+            <small><label className="text-muted">About</label></small>
+            <input 
+                type="text" 
+                className="form-control" 
+                placeholder="Write about yourself..."
+                value={about}
+                onChange={(e)=>setAbout(e.target.value)}
+            />
+        </div>)}
+
         {page!=="login" && (<div className="form-group p-2">
             <small><label className="text-muted">Your name</label></small>
             <input 
@@ -23,6 +58,7 @@ const AuthForm = ({
                 placeholder="Email addres"
                 value={email}
                 onChange={(e)=>setEmail(e.target.value)}
+                disabled={profileUpdate}
             />
         </div>
         <div className="form-group p-2">
@@ -63,8 +99,12 @@ const AuthForm = ({
 
         <div className="form-group p-2">
             <button 
-                disabled={page === "login" ? !email || !password 
-                    : !name || !email || !password|| !secret} 
+                disabled={
+                    profileUpdate ? loading : 
+                     page === "login" ? 
+                     !email || !password || loading: 
+                     !name || !email || !password || !secret || loading
+                } 
                 className="btn btn-primary col-12"
             >
                 {loading ? <SyncOutlined spin className="py-1"/> : "Submit"}

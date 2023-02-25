@@ -47,6 +47,11 @@ const Nav = () => {
                   </Link>
                 </li>
                 <li>
+                  <Link legacyBehavior href="/user/profile/update">
+                    <a className={`nav-link dropdown-item ${current === "/user/profile/update" && "active"}`}>Profile</a>
+                  </Link>
+                </li>
+                <li>
                   <a className="nav-link dropdown-item" onClick={logout}>Logout</a>
                 </li>
               </ul>
