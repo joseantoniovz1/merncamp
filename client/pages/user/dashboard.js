@@ -117,7 +117,7 @@ const Home = () => {
             let filtered = people.filter((p)=>p._id !== user._id);
             setPeople(filtered);
             // rerender the post in newsfeed
-            //fetchUserPosts();
+            //fetchUserPosts(); //
             toast.success(`Following ${user.name}`);
         } catch (err) {
             console.log(err);
