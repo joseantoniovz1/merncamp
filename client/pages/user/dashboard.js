@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import {toast} from "react-toastify";
 import PostList from "../../components/cards/PostList";
+import People from "../../components/cards/People";
 
 const Home = () => {
     const [state, setState] = useContext(UserContext);
@@ -15,14 +16,18 @@ const Home = () => {
     const [uploading, setUploading] = useState(false);
     //posts
     const [posts, setPosts] = useState([]);
+    // people
+    const [people, setPeople] = useState([]);
 
     //router
     const router = useRouter();
 
     //useEffect
     useEffect(() =>{
-        if(state && state.token)
+        if(state && state.token){
             fetchUserPosts();
+            findPeople();
+        }
     }, [state && state.token])
 
     const fetchUserPosts = async ()=> {
@@ -31,6 +36,15 @@ const Home = () => {
             //console.log("User posts: ", data);
             setPosts(data);
         }catch(err){
+            console.log(err);
+        }
+    }
+
+    const findPeople = async () => {
+        try {
+            const {data} = await axios.get("/find-people");
+            setPeople(data);
+        } catch (err) {
             console.log(err);
         }
     }
@@ -88,6 +102,16 @@ const Home = () => {
         }
     };
 
+    const handleFollow = async (user)=> {
+        //console.log("add this user to following list: ", user);
+        try {
+            const {data} = await axios.put("/user-follow", {_id:user._id});
+            console.log("handle follow response: ", data);
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
     return (
         <UserRoute>
             <div className="container-fluid">
@@ -111,7 +135,9 @@ const Home = () => {
                     </div>
                     { /*<pre>{JSON.stringify(posts, null, 4)}</pre>*/}
                     
-                    <div className="col-md-4">Sidebar</div>
+                    <div className="col-md-4">
+                        <People people={people} handleFollow={handleFollow}/>
+                    </div>
                 </div>
             </div>
         </UserRoute>

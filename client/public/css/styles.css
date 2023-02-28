@@ -10,6 +10,9 @@
 }
 
 .active {
-    background-color: navy;
-    
+    background-color: navy;   
+}
+
+.pointer {
+    cursor: pointer;
 }
