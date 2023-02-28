@@ -106,7 +106,19 @@ const Home = () => {
         //console.log("add this user to following list: ", user);
         try {
             const {data} = await axios.put("/user-follow", {_id:user._id});
-            console.log("handle follow response: ", data);
+            //console.log("handle follow response: ", data);
+            // update local storage, update user, keep token
+            let auth = JSON.parse(localStorage.getItem("auth"));
+            auth.user = data;
+            localStorage.setItem("auth", JSON.stringify(auth));
+            // update context
+            setState({...state, user: data});
+            // update people state
+            let filtered = people.filter((p)=>p._id !== user._id);
+            setPeople(filtered);
+            // rerender the post in newsfeed
+            //fetchUserPosts();
+            toast.success(`Following ${user.name}`);
         } catch (err) {
             console.log(err);
         }
