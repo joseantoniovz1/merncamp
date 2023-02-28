@@ -2,6 +2,7 @@ import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../context";
 import { useRouter } from "next/router";
+import { Avatar } from "antd";
 
 const Nav = () => {
 
@@ -26,7 +27,9 @@ const Nav = () => {
     <nav className="nav d-flex justify-content-between" style={{backgroundColor:"blue"}}>
       
         <Link legacyBehavior href="/">
-          <a className={`nav-link text-light logo ${current==="/" && "active"}`}>MERNCAMP</a>
+          <a className={`nav-link text-light logo ${current==="/" && "active"}`}>
+            <Avatar src="/images/logo.png"/> MERNCAMP
+          </a>
         </Link>
 
         { state !== null ? (
