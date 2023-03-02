@@ -7,7 +7,8 @@ import {
     postByUser,
     userPost,
     updatePost,
-    deletePost 
+    deletePost,
+    newsFeed
 } from "../controllers/post";
 // middleware
 import { requireSignIn, canEditDeletePost } from "../middlewares";
@@ -28,5 +29,7 @@ router.get("/user-posts", requireSignIn, postByUser);
 router.get("/user-post/:_id", requireSignIn, userPost);
 router.put("/update-post/:_id", requireSignIn, canEditDeletePost, updatePost);
 router.delete("/delete-post/:_id", requireSignIn, canEditDeletePost, deletePost);
+
+router.get("/news-feed", requireSignIn, newsFeed);
 
 module.exports = router;
