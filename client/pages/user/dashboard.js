@@ -125,6 +125,24 @@ const Home = () => {
         }
     };
 
+    const handleLike = async (_id) => {
+        try {
+            const {data} = axios.put("/like-post", {_id});
+            newsFeed();
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    const handleUnlike = async (_id) => {
+        try {
+            const {data} = axios.put("/unlike-post", {_id});
+            newsFeed();
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
     return (
         <UserRoute>
             <div className="container-fluid">
@@ -144,7 +162,12 @@ const Home = () => {
                             image = {image}
                         />
                         <br/>
-                        <PostList posts={posts} handleDelete={handleDelete}/>
+                        <PostList 
+                            posts={posts} 
+                            handleDelete={handleDelete} 
+                            handleLike={handleLike} 
+                            handleUnlike={handleUnlike}
+                        />
                     </div>
                     { /*<pre>{JSON.stringify(posts, null, 4)}</pre>*/}
                     
