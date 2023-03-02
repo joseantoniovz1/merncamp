@@ -1,4 +1,5 @@
 import Post from "../models/post";
+import User from "../models/user";
 import cloudinary from "cloudinary";
 
 cloudinary.config({
@@ -85,6 +86,24 @@ export const deletePost = async (req, res) => {
             const image = await cloudinary.uploader.destroy(post.image.public_id);
         }
         res.json({ok: true});
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+export const newsFeed = async (req, res) => {
+    try {
+        console.log("XYZ", req.auth);
+        const user = await User.findById(req.auth._id);
+        let following = user.following;
+        following.push(req.auth._id);
+        
+        const posts = await Post.
+            find({postedBy:{$in:following}})
+            .populate("postedBy", "_id name image")
+            .sort({createdAt: -1})
+            .limit(10);
+            res.json(posts);
     } catch (err) {
         console.log(err);
     }

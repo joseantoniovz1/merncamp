@@ -81,7 +81,7 @@ export const login = async (req, res) => {
 };
 
 export const currentUser = async (req, res) => {
-    console.log("ER: -> ", req.auth);
+    //console.log("ER: -> ", req.auth);
     try {
         const user = await User.findById(req.auth._id);
         console.log("User: ", user);
@@ -188,8 +188,8 @@ export const findPeople = async(req, res) => {
 
 export const addFollower = async(req, res, next) => {
     try {
-        const user = await User.findByIdAndUpdate(req.boyd._id, {
-            $addToSet: {followers: req.user._id}
+        const user = await User.findByIdAndUpdate(req.body._id, {
+            $addToSet: {followers: req.auth._id}
         });
         next();
     } catch (err) {
@@ -199,12 +199,44 @@ export const addFollower = async(req, res, next) => {
 
 export const userFollow = async(req, res) => {
     try {
-        const user = await User.findByIdAndUpdate(req.user._id, {
+        const user = await User.findByIdAndUpdate(req.auth._id, {
             $addToSet: {following: req.body._id},
         },{
             new: true
         }).select("-password -secret");
         res.json(user);
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+export const userFollowing = async(req, res) => {
+    try {
+        const user = await User.findById(req.auth._id);
+        const following = await User.find({_id: user.following}).limit(100);
+        res.json(following);
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+export const removeFollower = async(req, res, next) => {
+    try {
+        const user = await User.findByIdAndUpdate(req.body._id, {
+            $pull: {followers: req.auth._id}
+        });
+        next();
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+export const userUnfollow = async(req, res) =>{
+    try {
+        const user = await User.findByIdAndUpdate(req.auth._id, {
+            $pull: {following: req.body._id}
+        }, {new: true});
+        res.json(user)
     } catch (err) {
         console.log(err);
     }
