@@ -8,7 +8,7 @@ import {toast} from "react-toastify";
 import PostList from "../../components/cards/PostList";
 import People from "../../components/cards/People";
 import Link from "next/link";
-import {Modal} from "antd";
+import {Modal, Pagination} from "antd";
 import CommentForm from "../../components/forms/CommentForm";
 
 const Home = () => {
@@ -25,6 +25,9 @@ const Home = () => {
     const [comment, setComment] = useState("");
     const [visible, setVisible] = useState(false);
     const [currentPost, setCurrentPost] = useState({});
+    // pagination
+    const [totalPost, setTotalPost] = useState(0);
+    const [page, setPage] = useState(1);
 
     //router
     const router = useRouter();
@@ -35,11 +38,19 @@ const Home = () => {
             newsFeed();
             findPeople();
         }
-    }, [state && state.token])
+    }, [state && state.token, page]);
+
+    useEffect(()=> {
+        try {
+            axios.get("/total-posts").then(({data}) => setTotalPost(data));
+        } catch (err) {
+            console.log(err);
+        }
+    }, [])
 
     const newsFeed = async ()=> {
         try{
-            const {data} = await axios.get("/news-feed");
+            const {data} = await axios.get(`/news-feed/${page}`);
             //console.log("User posts: ", data);
             setPosts(data);
         }catch(err){
@@ -66,6 +77,7 @@ const Home = () => {
             if(data.error){
                 toast.error(data.error);
             } else {
+                setPage(1);
                 newsFeed();
                 toast.success("Post created");
                 setContent("");
@@ -171,8 +183,18 @@ const Home = () => {
         }
     };
 
-    const removeComment = async ()=> {
-
+    const removeComment = async (postId, comment) => {
+        let answer = window.confirm("¿Are you sure?");
+        if(!answer)
+            return;
+        try {
+            //console.log("Deleting comment from: ", postId, " and ", comment);    
+            const {data} = await axios.put("/remove-comment", {postId, comment});
+            console.log("Comment removed: ", data);
+            newsFeed();
+        } catch (err) {
+            console.log(err);
+        }
     };
 
     return (
@@ -200,8 +222,13 @@ const Home = () => {
                             handleLike={handleLike} 
                             handleUnlike={handleUnlike}
                             handleComment={handleComment}
+                            removeComment={removeComment}
                         />
+
+                        <Pagination current={page} total={(totalPost/3)*10} onChange={value => setPage(value)}/>
+
                     </div>
+
                     { /*<pre>{JSON.stringify(posts, null, 4)}</pre>*/}
                     
                     <div className="col-md-4">
