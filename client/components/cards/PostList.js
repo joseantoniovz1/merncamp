@@ -16,7 +16,7 @@ import {imageSource} from "../../functions";
 import Link from "next/link";
 import Post from "./Post";
 
-const PostList = ({posts, handleDelete, handleLike, handleUnlike, handleComment}) => {
+const PostList = ({posts, handleDelete, handleLike, handleUnlike, handleComment, removeComment}) => {
     
     const [state] = useContext(UserContext);
     const router = useRouter();
@@ -24,11 +24,13 @@ const PostList = ({posts, handleDelete, handleLike, handleUnlike, handleComment}
     return (
         <>{posts && posts.map((post)=> (
             <Post 
+                key={post._id}
                 post={post}
                 handleDelete={handleDelete}
                 handleLike={handleLike}
                 handleUnlike={handleUnlike}
                 handleComment={handleComment}
+                removeComment={removeComment}
             />
         ))}
     </>
