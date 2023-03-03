@@ -8,6 +8,8 @@ import {toast} from "react-toastify";
 import PostList from "../../components/cards/PostList";
 import People from "../../components/cards/People";
 import Link from "next/link";
+import {Modal} from "antd";
+import CommentForm from "../../components/forms/CommentForm";
 
 const Home = () => {
     const [state, setState] = useContext(UserContext);
@@ -19,6 +21,10 @@ const Home = () => {
     const [posts, setPosts] = useState([]);
     // people
     const [people, setPeople] = useState([]);
+    // comments
+    const [comment, setComment] = useState("");
+    const [visible, setVisible] = useState(false);
+    const [currentPost, setCurrentPost] = useState({});
 
     //router
     const router = useRouter();
@@ -143,6 +149,32 @@ const Home = () => {
         }
     };
 
+    const handleComment = (post) => {
+        setCurrentPost(post);
+        setVisible(true);
+
+    };
+
+    const addComment = async (e)=> {
+       e.preventDefault();
+        try {
+            const {data} = await axios.put("/add-comment", {
+                postId: currentPost._id,
+                comment
+            });
+            console.log("Add comment: ", data);
+            setComment("");
+            setVisible(false);
+            newsFeed();
+        } catch (err) {
+        console.log(err);
+        }
+    };
+
+    const removeComment = async ()=> {
+
+    };
+
     return (
         <UserRoute>
             <div className="container-fluid">
@@ -167,6 +199,7 @@ const Home = () => {
                             handleDelete={handleDelete} 
                             handleLike={handleLike} 
                             handleUnlike={handleUnlike}
+                            handleComment={handleComment}
                         />
                     </div>
                     { /*<pre>{JSON.stringify(posts, null, 4)}</pre>*/}
@@ -178,6 +211,13 @@ const Home = () => {
                         <People people={people} handleFollow={handleFollow}/>
                     </div>
                 </div>
+                <Modal open={visible} onCancel={()=> setVisible(false)} title="Comment" footer={null}>
+                    <CommentForm 
+                        addComment={addComment} 
+                        comment={comment} 
+                        setComment={setComment}
+                    />
+                </Modal>
             </div>
         </UserRoute>
     );

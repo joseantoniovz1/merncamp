@@ -1,6 +1,6 @@
 
 export const imageSource = (user) =>{
-    console.log(user);
+    //console.log(user);
     if(user.image){
         return user.image.url;
     } else {
