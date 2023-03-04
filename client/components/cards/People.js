@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import { UserContext } from "../../context";
 import UserRoute from "../routes/UserRoute";
 import {imageSource} from "../../functions";
+import Link from "next/link";
 
 const People = ({people, handleFollow}) => {
     const [state] = useContext(UserContext);
@@ -19,7 +20,12 @@ const People = ({people, handleFollow}) => {
                         avatar={<Avatar src={imageSource(user)}/>}
                         title={
                         <div className="d-flex justify-content-between">
-                            { user.username} <span onClick={()=>handleFollow(user)} className="text-primary pointer">Follow</span>
+                            <Link legacyBehavior href={`/user/${user.username}`}>
+                                <a>{ user.username}</a>
+                            </Link> 
+                            {state && state.user && user.followers && user.followers.includes(state.user._id) ? 
+                            (<span onClick={()=>handleFollow(user)} className="text-primary pointer">Follow</span>) : 
+                            (<span onClick={()=>handleUnfollow(user)} className="text-primary pointer">Unfollow</span>)}
                         </div>}>
                         
                     </List.Item.Meta>
