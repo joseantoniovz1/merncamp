@@ -52,7 +52,7 @@ export const login = async (req, res) => {
         const {email, password} = req.body;
         // verify if user exist in DB
         const user = await User.findOne({email});
-        console.log("USER: ", user);
+        //console.log("USER: ", user);
         if(!user) {
             return res.json({
                 error:"No user found"
@@ -118,7 +118,7 @@ export const forgotPassword = async(req, res) => {
         const hashedPassword = await hashPassword(newPassword);
         await User.findByIdAndUpdate(user._id, {password:hashedPassword});
         return res.json({
-            success : "Congrats. Now you can login with your new password"
+            success : "Congrats. Now you can login with ypostsour new password"
         });
     }catch(err){
         console.log(err)
@@ -262,7 +262,7 @@ export const searchUser = async(req, res)=> {
 export const getUser = async(req, res) => {
     try {
         const user = await User.findOne({username: req.params.username}).select("-password -secret");
-        
+        res.json(user);
     } catch (err) {
         console.log(err);
     }
