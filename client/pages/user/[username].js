@@ -25,14 +25,14 @@ const Username = () => {
         try {
             const {data} = await axios.get(`/user/${router.query.username}`);
             console.log("Following list: ", data);
-            setPeople(data);
+            setUser(data);
         } catch (err) {
             console.log(err);
         }
     };
 
     const imageSource = (user) =>{
-        console.log(user);
+        console.log("XXX: ", user);
         if(user.image){
             return user.image.url;
         } else {
@@ -43,7 +43,7 @@ const Username = () => {
     return (
         <div className="row col-md-6 offset-md-3">
             <div className="pt-5">
-                <Card hoverable cover={<img src={imageSource()} alt={user.name} />}>
+                <Card hoverable cover={<img src={imageSource(user)} alt={user.name} />}>
                     <Meta 
                         title={user.name} 
                         description={user.about} 

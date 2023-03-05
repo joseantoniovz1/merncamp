@@ -7,7 +7,7 @@ import UserRoute from "../routes/UserRoute";
 import {imageSource} from "../../functions";
 import Link from "next/link";
 
-const People = ({people, handleFollow}) => {
+const People = ({people, handleFollow, handleUnfollow}) => {
     const [state] = useContext(UserContext);
     
     const router = useRouter();
@@ -24,8 +24,8 @@ const People = ({people, handleFollow}) => {
                                 <a>{ user.username}</a>
                             </Link> 
                             {state && state.user && user.followers && user.followers.includes(state.user._id) ? 
-                            (<span onClick={()=>handleFollow(user)} className="text-primary pointer">Follow</span>) : 
-                            (<span onClick={()=>handleUnfollow(user)} className="text-primary pointer">Unfollow</span>)}
+                            (<span onClick={()=>handleUnfollow(user)} className="text-primary pointer">Unfollow</span>) : 
+                            (<span onClick={()=>handleFollow(user)} className="text-primary pointer">Follow</span>) }
                         </div>}>
                         
                     </List.Item.Meta>

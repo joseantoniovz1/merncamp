@@ -95,7 +95,7 @@ export const deletePost = async (req, res) => {
 
 export const newsFeed = async (req, res) => {
     try {
-        console.log("XYZ", req.auth);
+        //console.log("XYZ", req.auth);
         const user = await User.findById(req.auth._id);
         let following = user.following;
         following.push(req.auth._id);

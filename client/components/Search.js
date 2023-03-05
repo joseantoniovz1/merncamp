@@ -47,7 +47,7 @@ const Search = () => {
     const handleUnfollow = async (user) => {
         //console.log("add this user to following list: ", user);
         try {
-            const {data} = await axios.put("/user-follow", {_id:user._id});
+            const {data} = await axios.put("/user-unfollow", {_id:user._id});
             //console.log("handle follow response: ", data);
             // update local storage, update user, keep token
             let auth = JSON.parse(localStorage.getItem("auth"));
@@ -59,7 +59,7 @@ const Search = () => {
             let filtered = result.filter((p)=>p._id !== user._id);
             setResult(filtered);
             // rerender the post in newsfeed
-            toast.success(`Following ${user.name}`);
+            toast.success(`Unfollowing ${user.name}`);
         } catch (err) {
             console.log(err);
         }

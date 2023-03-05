@@ -1,8 +1,9 @@
 import { Avatar } from "antd";
 import dynamic from "next/dynamic";
-const ReactQuill = dynamic(() => import("react-quill", {ssr: false}));
 //import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+//const ReactQuill = dynamic(() => import("react-quill", {ssr: false}));
+const ReactQuill = dynamic(import('react-quill'), { ssr: false })
 import { CameraOutlined, LoadingOutlined } from "@ant-design/icons"
 
 const PostForm = ({content, setContent, postSubmit, handleImage, uploading, image}) =>{
