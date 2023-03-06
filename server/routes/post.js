@@ -13,7 +13,9 @@ import {
     unlikePost,
     addComment,
     removeComment,
-    totalPosts
+    totalPosts,
+    posts,
+    getPost
 } from "../controllers/post";
 // middleware
 import { requireSignIn, canEditDeletePost } from "../middlewares";
@@ -44,6 +46,10 @@ router.put("/add-comment", requireSignIn, addComment);
 router.put("/remove-comment", requireSignIn, removeComment);
 
 router.get("/total-posts", totalPosts);
+
+router.get("/posts", posts);
+
+router.get("/post/:_id", getPost);
 
 
 module.exports = router;
