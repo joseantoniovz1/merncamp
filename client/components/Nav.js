@@ -33,7 +33,7 @@ const Nav = () => {
         </Link>
 
         { state !== null ? (
-          <>
+          <div>
             <div className="dropdown">
               <a 
                 className="btn dropdown-toggle text-light" 
@@ -59,9 +59,9 @@ const Nav = () => {
                 </li>
               </ul>
             </div>
-          </>
+          </div>
         ): (
-          <>
+          <div>
           <Link legacyBehavior href="/login">
             <a className={`nav-link text-light ${current === "/login" && "active"}`}>Login</a>
           </Link>
@@ -69,7 +69,7 @@ const Nav = () => {
           <Link legacyBehavior href="/register">
             <a className={`nav-link text-light ${current === "/register" && "active"}`}>Register</a>
           </Link>
-        </>
+        </div>
         )}
 
     </nav>

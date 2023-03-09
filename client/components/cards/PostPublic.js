@@ -62,7 +62,7 @@ const PostPublic = ({
                         <CommentOutlined className="text-danger pt-2 h5 px-2"
                         />
                         <div className="pt-2 pl-3">
-                            <a>{post.comments.length} Comments</a>
+                            {post.comments.length} Comments
                         </div>
                     </div>
                 </div>
