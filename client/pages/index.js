@@ -1,14 +1,26 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { UserContext } from "../context";
 import ParallaxBG from "../components/cards/ParallaxBG";
 import axios from "axios";
 import PostPublic from "../components/cards/PostPublic"
 import Head from "next/head";
 import Link from "next/link";
+import io from "socket.io-client";
+
+const socket = io(process.env.NEXT_PUBLIC_SOCKEIO, {
+    reconnection: true
+});
 
 const Home = ({posts}) => {
 
     const [state, setState] = useContext(UserContext);
+
+    useEffect(()=> {
+        //console.log("Socketio on Join: ", socket);
+        socket.on("receive-message", (newMessage)=>{
+            alert(newMessage);
+        });
+    }, [])
 
     const head = () => {
         <Head>
@@ -23,13 +35,14 @@ const Home = ({posts}) => {
     };
 
     return (
-       <>
+       <div>
         {head()}
         <ParallaxBG url="/images/default.jpg" />
         <div className="container">
+            <button onClick={()=>{socket.emit("send-message", "This is an example")}}>Send Message</button>
             <div className="row pt-5">
                 {posts.map((post)=>(
-                    <div className="col-md-4">
+                    <div key={post._id} className="col-md-4">
                         <Link legacyBehavior href={`/post/view/${post._id}`}>
                             <a>
                                 <PostPublic key={post._id} post={post}/>
@@ -40,7 +53,7 @@ const Home = ({posts}) => {
             </div>
         </div>
         
-       </>
+       </div>
     );
 }; 
 
