@@ -27,7 +27,7 @@ const Login = () => {
                 email,
                 password
             });
-            console.log("QWE", data);
+            //console.log("QWE", data);
             if(data.error) {
                 toast.error(data.error);
                 setLoading(false);

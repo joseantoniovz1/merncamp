@@ -26,7 +26,7 @@ const Admin = () => {
     const newsFeed = async ()=> {
         try{
             const {data} = await axios.get(`/posts`);
-            //console.log("User posts: ", data);
+            console.log("Admin posts: ", data);
             setPosts(data);
         }catch(err){
             console.log(err);
