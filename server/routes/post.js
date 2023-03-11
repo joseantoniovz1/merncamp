@@ -52,7 +52,7 @@ router.get("/posts", posts);
 router.get("/post/view/:_id", getPost);
 
 //admin
-router.delete("admin/delete-post/:_id", requireSignIn, isAdmin, deletePost);
+router.delete("/admin/delete-post/:_id", requireSignIn, isAdmin, deletePost);
 
 
 module.exports = router;

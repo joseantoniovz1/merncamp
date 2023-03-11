@@ -12,7 +12,7 @@ const AdminRoute = ({children}) =>{
 
     useEffect(()=>{
         if(state && state.token)
-            getCurrentUser();
+            getCurrentAdmin();
     }, [state && state.token]);
 
     const getCurrentAdmin = async () =>{
