@@ -1,4 +1,5 @@
 import Post from "../models/post";
+import User from "../models/user";
 import {expressjwt} from "express-jwt";
 
 export const requireSignIn = expressjwt({
