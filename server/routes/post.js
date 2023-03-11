@@ -18,7 +18,7 @@ import {
     getPost
 } from "../controllers/post";
 // middleware
-import { requireSignIn, canEditDeletePost } from "../middlewares";
+import { requireSignIn, canEditDeletePost, isAdmin } from "../middlewares";
 
 const router = express.Router();
 
@@ -50,6 +50,9 @@ router.get("/total-posts", totalPosts);
 router.get("/posts", posts);
 
 router.get("/post/view/:_id", getPost);
+
+//admin
+router.delete("admin/delete-post/:_id", requireSignIn, isAdmin, deletePost);
 
 
 module.exports = router;
